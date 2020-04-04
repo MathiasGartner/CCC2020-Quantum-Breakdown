@@ -298,12 +298,13 @@ namespace CCC2020SS
                             continue;
                         }
 
-                        for (int delay = 999; delay <= 1100; delay++)
+                        //TODO: too slow, filter more
+                        for (int delay = 975; delay <= 1020; delay++)
                         {
                             System.Console.WriteLine(delay);
                             foreach (var llat1 in f1.LLATExact)
                             {
-                                var llat2 = f2.LLATExact.Where(p => p.TimestampOffset + delay == llat1.TimestampOffset).SingleOrDefault();
+                                var llat2 = f2.LLATExact.Where(p => p.TimestampOffset + delay == llat1.TimestampOffset).SingleOrDefault(); //TODO: too slow
                                 if (llat2 != null)
                                 //foreach(var llat2 in f2.LLATExact)
                                 {
@@ -324,9 +325,9 @@ namespace CCC2020SS
                 }
                 //);
 
-                var s = flightDetails.Where(p => p.Contacts.Count > 0).Select(p => p.Contacts.Select(m => p.Id + " " + m.ContactToFlightId + " " + m.Delay + " " + m.TimeStamp)).ToArray();
+                var s = flightDetails.Where(p => p.Contacts.Count > 0).SelectMany(p => p.Contacts.Select(m => p.Id + " " + m.ContactToFlightId + " " + m.Delay + " " + m.TimeStamp)).ToArray();
                 //var s = result.Select(p => String.Format("{0:0.0000000000000} {1:0.0000000000000} {2:0.0000000000000}", p.Lat, p.Long, p.Altitude)).ToArray();
-                //System.IO.File.WriteAllLines(filename + ".out", s);
+                System.IO.File.WriteAllLines(filename + ".out", s);
                 int tmp = 0;
 
                 //Level 4
